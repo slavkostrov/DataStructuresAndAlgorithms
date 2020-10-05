@@ -44,10 +44,41 @@ public:
 		else
 			return search(value, node_->left_child, 1);
 	}
+
+	void print() {
+		this->print(this->Root);
+	}
+
+
+	int32_t pop(T value) {
+		node* t = this->Root;
+		while (t != nullptr) {
+			if (t->info == value) {
+				if (t->left_child == t->right_child && t->left_child == nullptr)
+					return 0;
+
+			}
+			else 
+			{
+				if (t->info > value)
+					t = t->left_child;
+				else
+					t = t->right_child;
+			}
+		}
+	}
 private:
 	node* Root;
 	int32_t size;
 	bool empty;
+	void print(node* node_, int level = 0) {
+		if (node_ == nullptr)return;
+		this->print(node_->left_child, ++level);
+		for (int i = 0; i < level; ++i)std::cout << '|';
+		std::cout << node_->info << '\n';
+		level -= 1;
+		this->print(node_->right_child, ++level);
+	}
 };
 
 #endif
