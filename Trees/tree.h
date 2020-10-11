@@ -28,7 +28,7 @@ public:
 			*(node_) = new node(info);
 			return 1;
 		}
-		if (info > (*node_)->info)
+		if (info >= (*node_)->info)
 			return this->push(info, &((*node_)->right_child));
 		else
 			return this->push(info, &((*node_)->left_child));
@@ -39,7 +39,7 @@ public:
 		if (node_ == nullptr)return nullptr;
 		if (node_->info == value)
 			return &(node_->info);
-		if (node_->info < value)
+		if (node_->info <= value)
 			return search(value, node_->right_child, 1);
 		else
 			return search(value, node_->left_child, 1);
@@ -49,6 +49,65 @@ public:
 		this->print(this->Root);
 	}
 
+	int32_t remove(T value)
+	{
+		node* parent = nullptr;
+		node* current = this->Root;
+
+		while (current != nullptr && current->info != value) {
+			parent = current;
+			current = value >= current->info ? current = current->right_child : current = current->left_child;
+		}
+
+		node* temp;
+
+		if (current != nullptr) {
+			if (current->left_child == nullptr || current->right_child == nullptr) 
+			{
+				if (parent == nullptr) 
+				{
+					temp = this->Root;
+					this->Root = current->left_child == nullptr ? current->right_child : current->left_child;
+				}
+				else
+				{
+					temp = current;
+					if (parent->left_child == current) 
+					{	
+						parent->left_child = current->right_child == nullptr ? current->left_child : current->right_child;
+					}
+					else // parent->right_child == current
+					{
+						parent->right_child = current->right_child == nullptr ? current->left_child : current->right_child;
+					}
+				}
+			}
+			else // current->left_child != nullptr && current->right_child != nullptr
+			{
+				node* p_parent = current;
+				node* current_min = current->right_child;
+				while (current_min->left_child != nullptr) 
+				{
+					parent = current_min;
+					current_min = current_min->left_child;
+				}
+
+				current->info = current_min->info;
+				temp = current_min;
+
+				if (p_parent->left_child == current_min)
+					p_parent->left_child = current_min->right_child;
+				else
+					p_parent->right_child = current_min->right_child;
+				
+				return 0;
+			}
+			delete temp;
+			return 0;
+		}
+		else
+			return -1;
+	}
 
 	int32_t pop(T value) {
 		node* t = this->Root;
@@ -58,7 +117,7 @@ public:
 					return 0;
 
 			}
-			else 
+			else
 			{
 				if (t->info > value)
 					t = t->left_child;
