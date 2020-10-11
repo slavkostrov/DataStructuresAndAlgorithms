@@ -88,7 +88,7 @@ public:
 				node* current_min = current->right_child;
 				while (current_min->left_child != nullptr) 
 				{
-					parent = current_min;
+					p_parent = current_min;
 					current_min = current_min->left_child;
 				}
 
