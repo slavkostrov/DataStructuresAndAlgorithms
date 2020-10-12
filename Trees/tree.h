@@ -5,7 +5,8 @@ template <typename T>
 class BinaryTree {
 public:
 	struct node {
-		node(T info) {
+		node(T info) 
+		{
 			this->info = info;
 			this->left_child = this->right_child = nullptr;
 		}
@@ -14,13 +15,15 @@ public:
 		node* right_child;
 	};
 
-	BinaryTree() {
+	BinaryTree() 
+	{
 		this->size = 0;
 		this->Root = nullptr;
 		this->empty = true;
 	}
 
-	int16_t push(T info, node** node_ = 0) {
+	int16_t push(T info, node** node_ = 0) 
+	{
 		if (node_ == 0)node_ = &(this->Root);
 		this->size += 1;
 		if (*(node_) == nullptr)
@@ -34,9 +37,12 @@ public:
 			return this->push(info, &((*node_)->left_child));
 	}
 
-	T* search(T value, node* node_ = 0, int32_t key = 0) {
-		if (key == 0)node_ = this->Root;
-		if (node_ == nullptr)return nullptr;
+	T* search(T value, node* node_ = 0, int32_t key = 0) 
+	{
+		if (key == 0)
+			node_ = this->Root;
+		if (node_ == nullptr)
+			return nullptr;
 		if (node_->info == value)
 			return &(node_->info);
 		if (node_->info <= value)
@@ -45,7 +51,8 @@ public:
 			return search(value, node_->left_child, 1);
 	}
 
-	void print() {
+	void print() 
+	{
 		this->print(this->Root);
 	}
 
@@ -54,14 +61,16 @@ public:
 		node* parent = nullptr;
 		node* current = this->Root;
 
-		while (current != nullptr && current->info != value) {
+		while (current != nullptr && current->info != value) 
+		{
 			parent = current;
 			current = value >= current->info ? current = current->right_child : current = current->left_child;
 		}
 
 		node* temp;
 
-		if (current != nullptr) {
+		if (current != nullptr) 
+		{
 			if (current->left_child == nullptr || current->right_child == nullptr) 
 			{
 				if (parent == nullptr) 
