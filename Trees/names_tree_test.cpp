@@ -14,6 +14,7 @@ int main()
 		push(&Tree, name);
 		getline(std::cin, name);
 	}
-
+	std::cout << '\n';
+	print(Tree);
 	return 0;
 }

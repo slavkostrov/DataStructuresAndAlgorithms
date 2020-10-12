@@ -1,6 +1,8 @@
 #include "names_tree.h"
 #include <iostream>
 
+
+
 int16_t push(node** root, std::string name)
 {
     node** pointer = root; // указатель на указатель текущего узла
@@ -31,79 +33,96 @@ int16_t push(node** root, std::string name)
 
     if (p_parent != nullptr) // выполн€етс€ всегда, поскольку корень создаЄтс€ 
     {
-        if (p_parent->col == BLACK) 
-        /*
-            ≈сли родитель черный, то всЄ в пор€дке и ничего мен€ть не нужно, возвращаем единицу 
-        */
+        if (p_parent->col == BLACK)
+            /*
+                ≈сли родитель черный, то всЄ в пор€дке и ничего мен€ть не нужно, возвращаем единицу
+            */
         {
             return int16_t(0);
         }
-        else 
-            while (p_parent->col == RED && current != root_pointer) // WHILE 
-            /*
-                ≈сли отец красный, то существует два случа€:
-                1) ƒ€д€ тоже красный => перекрашиваем 
-                2) ƒ€д€ черный => выполн€ем повороты и перекрашивани€
-                “акже нужно учесть частные случаи, когда д€ди нет и др.
-                
-                grandfather - указатель на деда
-                uncle - указатель на д€дю
-                current - добавл€емый узел 
-            */
-            {
-                node* grandfather = p_parent->p_parent; 
-                node* uncle = grandfather->left_child == p_parent ? grandfather->right_child : grandfather->left_child;
+        else
+        {
+            node* grandfather = p_parent->p_parent;
+            node* uncle = grandfather->left_child == p_parent ? grandfather->right_child : grandfather->left_child;
+  
 
-                if (uncle->col == RED) 
-                /*
-                    ≈сли д€д€ красный:
-                    1) ƒ€д€ и отец в чЄрный
-                    2) ƒед в красый, если не корень
-                */
+            while (current != root_pointer && current->p_parent->col == RED) // WHILE 
+               /*
+                   ≈сли отец красный, то существует два случа€:
+                   1) ƒ€д€ тоже красный => перекрашиваем
+                   2) ƒ€д€ черный => выполн€ем повороты и перекрашивани€
+                   “акже нужно учесть частные случаи, когда д€ди нет и др.
+
+                   grandfather - указатель на деда
+                   uncle - указатель на д€дю
+                   current - добавл€емый узел
+               */
+            {
+                if (uncle->col == RED)
+                    /*
+                        ≈сли д€д€ красный:
+                        1) ƒ€д€ и отец в чЄрный
+                        2) ƒед в красый, если не корень
+                    */
                 {
                     p_parent->col = BLACK;
                     uncle->col = BLACK;
                     grandfather->col = (int)(grandfather->p_parent == nullptr);
                 }
-                else 
-                    if (uncle->col == BLACK || uncle->col == NIL) 
+                else
+                    if (uncle->col == BLACK || uncle->col == NIL)
                     {
                         /*
-                            ≈сли д€д€ чЄрный, то нужно определить каким сыном €вл€етс€ добавл€емые узел и в зависимости от этого
+                            ≈сли д€д€ чЄрный (в частности, если д€д€ нет),
+                            то нужно определить каким сыном €вл€етс€ добавл€емые узел и в зависимости от этого
                             произвести необходимые перекрашивани€ и повороты
                             1) –одитель - левый сын
                             2) –одитель - правый сын
                         */
-                        if (grandfather->left_child == p_parent) 
+                        if (current->p_parent->p_parent->left_child == p_parent) // если отец левый сын
                         {
-                            if (p_parent->right_child == current) 
+                            if (current->p_parent->right_child == current) 
                             {
+                                /*
+                                    ≈сли добавл€емый сын правый, то сделать левым с помощью
+                                    левого поворота
+                                */
                                 current = current->p_parent;
-                                leftRotate(current);
+                                leftRotate(current, root);
                             }
                             current->p_parent->col = BLACK;
                             current->p_parent->p_parent->col = RED;
-                            rightRotate(current->p_parent->p_parent);
+                            // правый поворот
+                            rightRotate(current->p_parent->p_parent, root);
                         }
-                        else if (grandfather->right_child == p_parent) 
+                        else 
+                            if (current->p_parent->p_parent->right_child == p_parent) // если отец правый сын
                         {
-                            if (p_parent->left_child == current) {
+                            if (current->p_parent->left_child == current) { 
+                                /*
+                                    ≈сли добавл€емый сын левый, то сделать правым с помощью
+                                    правого поворота
+                                */
                                 current = current->p_parent;
-                                rightRotate(current);
+                                rightRotate(current, root);
                             }
                             current->p_parent->col = BLACK;
                             current->p_parent->p_parent->col = RED;
-                            leftRotate(current->p_parent->p_parent);
+                            // левый поворот
+                            leftRotate(current->p_parent->p_parent, root);
                         }
                     }
             }
+        }
+    
     }
+    // root_pointer->col = BLACK;
     return 0;
 }
 
-void leftRotate(node* x)
+void leftRotate(node* x, node** root)
 {
-    std::cout << "\nLeft rotation\n";
+    std::cout << "Left rotation for \"" << x->name << "\"\n";
     node* y = x->right_child;
     x->right_child = y->left_child;
     if (y->left_child->col != NIL) y->left_child->p_parent = x;
@@ -114,21 +133,19 @@ void leftRotate(node* x)
         else
             x->p_parent->right_child = y;
     }
-    //else {
-     //   root = y;
-    //}
-
-    /* link x and y */
+    else {
+        *root = y;
+    }
     y->left_child = x;
     if (x->col != NIL) x->p_parent = y;
 }
 
-void rightRotate(node* x)
+void rightRotate(node* x, node** root)
 {
-    std::cout << "\nRight rotation\n";
+    std::cout << "Right rotation for \"" << x->name << "\"\n";
     node* y = x->left_child;
     x->left_child = y->right_child;
-    if (y->right_child->col != NIL) y->right_child->p_parent = x;
+    if (y->right_child ->col!= NIL) y->right_child->p_parent = x;
     if (y->col != NIL) y->p_parent = x->p_parent;
     if (x->p_parent) {
         if (x == x->p_parent->right_child)
@@ -136,9 +153,20 @@ void rightRotate(node* x)
         else
             x->p_parent->left_child = y;
     }
-    //else {
-      //  root = y;
-    //}
+    else {
+        *root = y;
+    }
     y->right_child = x;
     if (x->col != NIL) x->p_parent = y;
+}
+
+void print(node* node_, int32_t level)
+{
+    if (node_->col == NIL)return;
+    print(node_->left_child, ++level);
+    for (int i = 0; i < level; ++i)
+        std::cout << '|';
+    std::cout << node_->col << '\n';
+    level -= 1;
+    print(node_->right_child, ++level);
 }
