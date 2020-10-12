@@ -120,7 +120,8 @@ int16_t push(node** root, std::string name)
         }
     
     }
-    // root_pointer->col = BLACK;
+    if (root_pointer)
+        root_pointer->col = BLACK;
     return 0;
 }
 
