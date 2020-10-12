@@ -16,6 +16,16 @@ int main()
 		getline(std::cin, name);
 	}
 	std::cout << '\n';
+
+	std::cout << "Print function realisation with names:\n";
+	print(Tree, false);
+	std::cout << '\n';
+	std::cout << "Print function realisation with colors:\n";
 	print(Tree);
+	std::cout << '\n';
+	std::cout << "Backward pass realisation:\n";
+	backward_pass(Tree);
+	std::cout << "\nSymmetric pass realisation:\n";
+	symmetric_pass(Tree);
 	return 0;
 }

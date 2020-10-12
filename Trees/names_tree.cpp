@@ -122,11 +122,16 @@ int16_t push(node** root, std::string name)
 
 void leftRotate(node* x, node** root)
 {
+    /*
+        Функция для левого поворота
+    */
     std::cout << "Left rotation for \"" << x->name << "\"\n";
     node* y = x->right_child;
     x->right_child = y->left_child;
-    if (y->left_child->col != NIL) y->left_child->p_parent = x;
-    if (y->col != NIL) y->p_parent = x->p_parent;
+    if (y->left_child->col != NIL) 
+        y->left_child->p_parent = x;
+    if (y->col != NIL)
+        y->p_parent = x->p_parent;
     if (x->p_parent) {
         if (x == x->p_parent->left_child)
             x->p_parent->left_child = y;
@@ -137,18 +142,22 @@ void leftRotate(node* x, node** root)
         *root = y;
     }
     y->left_child = x;
-    if (x->col != NIL) x->p_parent = y;
-    //
-    // 
+    if (x->col != NIL) 
+        x->p_parent = y; 
 }
 
 void rightRotate(node* x, node** root)
 {
+    /*
+    Функция для правого поворота
+    */
     std::cout << "Right rotation for \"" << x->name << "\"\n";
     node* y = x->left_child;
     x->left_child = y->right_child;
-    if (y->right_child ->col!= NIL) y->right_child->p_parent = x;
-    if (y->col != NIL) y->p_parent = x->p_parent;
+    if (y->right_child ->col!= NIL) 
+        y->right_child->p_parent = x;
+    if (y->col != NIL) 
+        y->p_parent = x->p_parent;
     if (x->p_parent) {
         if (x == x->p_parent->right_child)
             x->p_parent->right_child = y;
@@ -159,16 +168,36 @@ void rightRotate(node* x, node** root)
         *root = y;
     }
     y->right_child = x;
-    if (x->col != NIL) x->p_parent = y;
+    if (x->col != NIL) 
+        x->p_parent = y;
 }
 
-void print(node* node_, int32_t level)
+void print(node* node_, bool colors, int32_t level)
 {
     if (node_->col == NIL)return;
-    print(node_->left_child, ++level);
+    print(node_->left_child, colors, ++level);
     for (int i = 0; i < level; ++i)
         std::cout << '|';
-    std::cout << node_->col << '\n';
+    if (colors) 
+        std::cout << node_->col << '\n';
+    else 
+        std::cout << node_->name << '\n';
     level -= 1;
-    print(node_->right_child, ++level);
+    print(node_->right_child, colors, ++level);
+}
+
+void backward_pass(node* node_)
+{
+    if (node_->col == NIL)return;
+    backward_pass(node_->left_child);
+    backward_pass(node_->right_child);
+    std::cout << node_->name << ' ';
+}
+
+void symmetric_pass(node* node_)
+{
+    if (node_->col == NIL)return;
+    symmetric_pass(node_->left_child);
+    std::cout << node_->name << ' ';
+    symmetric_pass(node_->right_child);
 }

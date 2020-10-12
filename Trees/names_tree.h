@@ -41,6 +41,8 @@ struct node {
 int16_t push(node** root, std::string name);
 void leftRotate(node* p, node** root);
 void rightRotate(node* x, node** root);
-void print(node* node_, int32_t level = 0);
+void print(node* node_, bool colors = true, int32_t level = 0);
+void backward_pass(node* node_);
+void symmetric_pass(node* node_);
 
 #endif // !NAMES_TREE_H
