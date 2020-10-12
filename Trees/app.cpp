@@ -53,7 +53,7 @@ int32_t interactive_app()
 			if (push(&Tree, name) == 0)
 				std::cout << "Added.\n";
 			else
-				std::cout << "Error\n";
+				std::cout << "Error (already exists)\n";
 			system("pause");
 			system("cls");
 		}
@@ -106,6 +106,9 @@ int32_t interactive_app()
 			system("cls");
 		}
 	}
+	clear_memory(Tree);
 	system("cls");
+	std::cout << "Memory is cleared\n";
+	system("pause");
 	return 0;
 }

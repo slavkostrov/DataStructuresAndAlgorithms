@@ -194,6 +194,14 @@ void backward_pass(node* node_)
     std::cout << node_->name << ' ';
 }
 
+void clear_memory(node* node_)
+{
+    if (node_->col == NIL)return;
+    backward_pass(node_->left_child);
+    backward_pass(node_->right_child);
+    delete node_;
+}
+
 void symmetric_pass(node* node_)
 {
     if (node_->col == NIL)return;
