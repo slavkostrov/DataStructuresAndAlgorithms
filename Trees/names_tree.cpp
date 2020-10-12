@@ -207,6 +207,7 @@ void path_length(node* node_, std::string name, int32_t N)
     if (node_->col == NIL)
     {
         std::cout << "There isn't \"" << name << "\" in the tree";
+        return;
     }
     if (node_->name == name) 
     {
