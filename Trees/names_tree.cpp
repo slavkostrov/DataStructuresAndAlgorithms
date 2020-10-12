@@ -58,6 +58,9 @@ int16_t push(node** root, std::string name)
                    current - добавляемый узел
                */
             {
+                p_parent = current->p_parent;
+                node* grandfather = current->p_parent->p_parent;
+                node* uncle = grandfather->left_child == p_parent ? grandfather->right_child : grandfather->left_child;
                 if (uncle->col == RED)
                     /*
                         Если дядя красный:
@@ -67,7 +70,8 @@ int16_t push(node** root, std::string name)
                 {
                     p_parent->col = BLACK;
                     uncle->col = BLACK;
-                    grandfather->col = (int)(grandfather->p_parent == nullptr);
+                    grandfather->col = (int)(grandfather == *root);
+                    current = grandfather;
                 }
                 else
                     if (uncle->col == BLACK || uncle->col == NIL)

@@ -34,7 +34,7 @@ int32_t interactive_app()
 {
 	std::cout << "Enter first element value: ";
 	std::string name;
-	uint16_t command;
+	std::string command;
 	getline(std::cin, name);
 	node* Tree = new node(name, true);
 	std::cout << "Root is created !\n";
@@ -44,9 +44,9 @@ int32_t interactive_app()
 		std::cout << "\n6 - Tree's depth\n7 - Length of path to element\nCommand: ";
 		std::cin >> command;
 		system("cls");
-		if (command == 0)
+		if (command == "0")
 			break;
-		if (command == 1)
+		if (command == "1")
 		{
 			std::cout << "Input value to push: ";
 			std::cin >> name;
@@ -57,7 +57,7 @@ int32_t interactive_app()
 			system("pause");
 			system("cls");
 		}
-		if (command == 2)
+		if (command == "2")
 		{
 			std::cout << "Tree struct:\n";
 			print(Tree, false);
@@ -65,7 +65,7 @@ int32_t interactive_app()
 			system("pause");
 			system("cls");
 		}
-		if (command == 3)
+		if (command == "3")
 		{
 			std::cout << "Tree struct (colors):\n";
 			print(Tree, true);
@@ -73,7 +73,7 @@ int32_t interactive_app()
 			system("pause");
 			system("cls");
 		}
-		if (command == 4)
+		if (command == "4")
 		{
 			std::cout << "Backward pass realisation:\n";
 			backward_pass(Tree);
@@ -81,7 +81,7 @@ int32_t interactive_app()
 			system("pause");
 			system("cls");
 		}
-		if (command == 5)
+		if (command == "5")
 		{
 			std::cout << "Symmetric pass realisation:\n";
 			symmetric_pass(Tree);
@@ -89,13 +89,13 @@ int32_t interactive_app()
 			system("pause");
 			system("cls");
 		}
-		if (command == 6)
+		if (command == "6")
 		{
 			std::cout << "Tree depth is " << depth(Tree) << "\n";
 			system("pause");
 			system("cls");
 		}
-		if (command == 7)
+		if (command == "7")
 		{
 			std::cout << "Input value for search: ";
 			std::cin >> name;
