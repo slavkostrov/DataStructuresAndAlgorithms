@@ -201,3 +201,34 @@ void symmetric_pass(node* node_)
     std::cout << node_->name << ' ';
     symmetric_pass(node_->right_child);
 }
+
+void path_length(node* node_, std::string name, int32_t N)
+{
+    if (node_->col == NIL)
+    {
+        std::cout << "There isn't \"" << name << "\" in the tree";
+    }
+    if (node_->name == name) 
+    {
+        std::cout << "Path to " << name << " length is " << N;
+        return;
+    }
+    else
+    {
+        if (name > node_->name)
+            path_length(node_->right_child, name, N + 1);
+        else if (name < node_->name)
+            path_length(node_->left_child, name, N + 1);
+        else return;
+    }
+}
+
+int32_t depth(node* node_)
+{
+    if (node_->col == NIL)
+        return 0;
+    else 
+    {
+        return std::fmax(depth(node_->left_child) + 1, depth(node_->right_child) + 1);
+    }
+}

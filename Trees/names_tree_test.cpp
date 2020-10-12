@@ -25,7 +25,10 @@ int main()
 	std::cout << '\n';
 	std::cout << "Backward pass realisation:\n";
 	backward_pass(Tree);
-	std::cout << "\nSymmetric pass realisation:\n";
+	std::cout << "\n\nSymmetric pass realisation:\n";
 	symmetric_pass(Tree);
+	std::cout << "\n\nPath length realisation: ";
+	path_length(Tree, "7");
+	std::cout << "\n\nTree depth is " << depth(Tree) << "\n";
 	return 0;
 }
