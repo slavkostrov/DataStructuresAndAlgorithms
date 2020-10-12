@@ -139,6 +139,7 @@ void leftRotate(node* x, node** root)
     y->left_child = x;
     if (x->col != NIL) x->p_parent = y;
     //
+    // 
 }
 
 void rightRotate(node* x, node** root)
