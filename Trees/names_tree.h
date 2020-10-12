@@ -36,7 +36,7 @@ struct node {
 };
 
 int16_t push(node** root, std::string name);
-node* leftRotate(node* p);
-node* rightRotate(node* x);
+void leftRotate(node* p);
+void rightRotate(node* x);
 
 #endif // !NAMES_TREE_H

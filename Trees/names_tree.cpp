@@ -1,5 +1,5 @@
 #include "names_tree.h"
-
+#include <iostream>
 
 int16_t push(node** root, std::string name)
 {
@@ -76,55 +76,56 @@ int16_t push(node** root, std::string name)
                         */
                         if (grandfather->left_child == p_parent) 
                         {
-                            if (uncle->col == BLACK) 
+                            if (p_parent->right_child == current) 
                             {
-
-                            
+                                current = current->p_parent;
+                                leftRotate(current);
                             }
-                            else // NIL
-                            {
-
-                            }
+                            current->p_parent->col = BLACK;
+                            current->p_parent->p_parent->col = RED;
+                            rightRotate(current->p_parent->p_parent);
                         }
-                        else // if (p_parent->left_child != current)
+                        else if (grandfather->right_child == p_parent) 
                         {
-                            if (uncle->col == BLACK)
-                            {
-
-
+                            if (p_parent->left_child == current) {
+                                current = current->p_parent;
+                                rightRotate(current);
                             }
-                            else // NIL
-                            {
-
-                            }
+                            current->p_parent->col = BLACK;
+                            current->p_parent->p_parent->col = RED;
+                            leftRotate(current->p_parent->p_parent);
                         }
                     }
             }
     }
+    return 0;
 }
 
-node* leftRotate(node* q)
+void leftRotate(node* x)
 {
-    node* p = q->right_child;
-    q->right_child = p->left_child;
-    if (p->left_child->col != NIL)p->left_child->p_parent = q;
-    if (p->col != NIL)p->p_parent = q->p_parent;
-    
-    if (q->p_parent) {
-        if (q == q->p_parent->left_child)
-            q->p_parent->left_child = p;
+    std::cout << "\nLeft rotation\n";
+    node* y = x->right_child;
+    x->right_child = y->left_child;
+    if (y->left_child->col != NIL) y->left_child->p_parent = x;
+    if (y->col != NIL) y->p_parent = x->p_parent;
+    if (x->p_parent) {
+        if (x == x->p_parent->left_child)
+            x->p_parent->left_child = y;
         else
-            q->p_parent->right_child = p;
+            x->p_parent->right_child = y;
     }
     //else {
-      //  root = y;
+     //   root = y;
     //}
-    p->left_child = q;
-    if (q->col != NIL) q->p_parent = p;
+
+    /* link x and y */
+    y->left_child = x;
+    if (x->col != NIL) x->p_parent = y;
 }
 
-node* rightRotate(node* x)
+void rightRotate(node* x)
 {
+    std::cout << "\nRight rotation\n";
     node* y = x->left_child;
     x->left_child = y->right_child;
     if (y->right_child->col != NIL) y->right_child->p_parent = x;
