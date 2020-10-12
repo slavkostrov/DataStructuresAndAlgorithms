@@ -2,5 +2,5 @@
 
 int main() 
 {
-	return exec_app();
+	return interactive_app();
 }
