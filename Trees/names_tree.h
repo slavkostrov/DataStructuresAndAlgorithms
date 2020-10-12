@@ -3,6 +3,7 @@
 #define RED 0
 #define BLACK 1
 #define NIL 2
+
 #include <string>
 
 struct node {
