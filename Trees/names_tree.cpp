@@ -181,12 +181,23 @@ void print(node* node_, bool colors, int32_t level)
 {
     if (node_->col == NIL)return;
     print(node_->left_child, colors, ++level);
-    for (int i = 0; i < level; ++i)
-        std::cout << '|';
-    if (colors) 
-        std::cout << node_->col << '\n';
+    int i = 0;
+    for (i = 0; i < level; ++i)
+        std::cout << "\x1b[30;47m|\x1b[0m";
+    if (colors) {
+        if (node_->col == RED)
+            std::cout << "\x1b[31;47m" + std::to_string(node_->col) + "\x1b[0m";
+        else
+            std::cout << "\x1b[30;47m" + std::to_string(node_->col) + "\x1b[0m";
+    }
     else 
-        std::cout << node_->name << '\n';
+        if (node_->col == RED)
+            std::cout << "\x1b[31;47m" + node_->name + "\x1b[0m";
+        else
+            std::cout << "\x1b[30;47m" + node_->name + "\x1b[0m";
+    for (i; i < 20; ++i)
+        std::cout << "\x1b[30;47m \x1b[0m";
+    std::cout << '\n';
     level -= 1;
     print(node_->right_child, colors, ++level);
 }
