@@ -41,7 +41,7 @@ int32_t interactive_app()
 	while (true)
 	{
 		std::cout << "0 - Exit\n1 - Add new element\n2 - Print tree (elements)\n3 - Print tree colors\n4 - Backward pass\n5 - Symmetric pass";
-		std::cout << "\n6 - Tree's depth\n7 - Length of path to element\nCommand: ";
+		std::cout << "\n6 - Tree's depth\n7 - Length of path to element\n8 - Sequential input\nCommand: ";
 		std::cin >> command;
 		system("cls");
 		if (command == "0")
@@ -102,6 +102,17 @@ int32_t interactive_app()
 			std::cout << "Path length to " << name << " :\n";
 			path_length(Tree, name);
 			std::cout << '\n';
+			system("pause");
+			system("cls");
+		}
+		if (command == "8")
+		{
+			std::cout << "Input value (while input != end): ";
+			std::cin >> name;
+			while (name != "end") {
+				push(&Tree, name);
+				std::cin >> name;
+			}
 			system("pause");
 			system("cls");
 		}

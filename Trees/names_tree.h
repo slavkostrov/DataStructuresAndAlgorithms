@@ -48,4 +48,5 @@ void symmetric_pass(node* node_);
 void path_length(node* root, std::string name, int32_t N = 0);
 int32_t depth(node* node_);
 
+
 #endif // !NAMES_TREE_H
