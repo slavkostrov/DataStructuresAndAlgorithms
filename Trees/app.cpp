@@ -30,7 +30,7 @@ int32_t exec_app()
 	return 0;
 }
 
-int32_t interactive_app()
+int32_t main_app()
 {
 	std::cout << "Enter first element value: ";
 	std::string name;
