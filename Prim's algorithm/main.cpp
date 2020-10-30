@@ -11,6 +11,8 @@ int main() {
 	int key;
 	std::cin >> key;
 	graph = key == 1 ? graph_input() : test_input();
+	mst_search(graph);
+	
 
 	system("pause");
 }

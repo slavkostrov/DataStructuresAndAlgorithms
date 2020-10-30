@@ -64,4 +64,52 @@ std::vector<std::vector<std::pair<int32_t, int32_t>>> test_input()
 
 	return graph;
 }
+std::vector<int> mst_search(std::vector<std::vector<std::pair<int32_t, int32_t>>> graph)
+{
+	int32_t size = graph.size() - 1; // вершины нумеруются с единицы
+
+	std::vector<int32_t> mst(size + 1); 
+	std::vector<int32_t> min_distance_from(size + 1, 999999); // хранит вес наименьшего допустимого ребра из вершины
+	std::vector<int32_t> to(size + 1, -1); // содержит конец этого наименьшего ребра 
+	/*
+		Начинаем поиск с первой вершины => расстояние до которой 0
+	*/
+
+	min_distance_from[1] = 0;
+
+	std::set<std::pair<int32_t, int32_t> > q;
+	q.insert({ 0, 1 }); // { min_to, to } 
+	std::vector<bool> used(size + 1, false);
+
+	for (int i = 1; i <= size; i++) 
+	{
+		
+
+
+		if (q.empty()) // => граф не связный
+		{
+			std::cout << "граф не связный!";
+			exit(0);
+		}
+
+		int v = q.begin()->second;
+		q.erase(q.begin());
+		used[v] = true;
+
+		if (to[v] != -1)
+			std::cout << "from " << to[v] << " to " << v << '\n';
+
+		for (auto item : graph[v]) {
+			int32_t U = item.first,
+				value = item.second;
+			if (value < min_distance_from[U] && !used[U]) {
+				q.erase({ min_distance_from[U], U });
+				min_distance_from[U] = value;
+				to[U] = v;
+				q.insert({ min_distance_from[U], U });
+			}
+		}
+	}
+	return std::vector<int>();
+}
 ;
