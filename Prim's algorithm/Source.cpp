@@ -62,20 +62,34 @@ std::vector<std::vector<std::pair<int32_t, int32_t>>> test_input()
 	graph[6].emplace_back(std::make_pair(5, 3));
 	graph[5].emplace_back(std::make_pair(6, 3));
 
+	std::cout << "Input graph:\n";
+	for (int i = 1; i < graph.size(); i++)
+	{	
+		std::cout << i << " : ";
+		for (auto item : graph[i])
+			std::cout << item.first << " ";
+		std::cout << '\n';
+	}
+	std::cout << '\n';
+	std::cout << "Total cost: " << 3 + 2 + 4 + 3 + 3 + 2 + 4 + 4;
+	std::cout << '\n';
+	std::cout << '\n';
 	return graph;
 }
-std::vector<int> mst_search(std::vector<std::vector<std::pair<int32_t, int32_t>>> graph)
+
+std::vector<std::vector<int32_t>> mst_search(std::vector<std::vector<std::pair<int32_t, int32_t>>> graph)
 {
 	int32_t size = graph.size() - 1; // вершины нумеруются с единицы
-
+	int32_t total_cost = 0;
+	std::vector<std::vector<int32_t>> Tree(size + 1);
 	std::vector<int32_t> mst(size + 1); 
-	std::vector<int32_t> min_distance_from(size + 1, 999999); // хранит вес наименьшего допустимого ребра из вершины
+	std::vector<int32_t> min_distance_to(size + 1, 999999); // хранит вес наименьшего допустимого ребра из вершины
 	std::vector<int32_t> to(size + 1, -1); // содержит конец этого наименьшего ребра 
 	/*
 		Начинаем поиск с первой вершины => расстояние до которой 0
 	*/
 
-	min_distance_from[1] = 0;
+	min_distance_to[1] = 0;
 
 	std::set<std::pair<int32_t, int32_t> > q;
 	q.insert({ 0, 1 }); // { min_to, to } 
@@ -83,8 +97,6 @@ std::vector<int> mst_search(std::vector<std::vector<std::pair<int32_t, int32_t>>
 
 	for (int i = 1; i <= size; i++) 
 	{
-		
-
 
 		if (q.empty()) // => граф не связный
 		{
@@ -97,19 +109,39 @@ std::vector<int> mst_search(std::vector<std::vector<std::pair<int32_t, int32_t>>
 		used[v] = true;
 
 		if (to[v] != -1)
-			std::cout << "from " << to[v] << " to " << v << '\n';
+		{
+			std::cout << "from " << to[v] << " to " << v << " with value = " << min_distance_to[v] << '\n';
+			//Tree[v].push_back(to[v]);
+			Tree[to[v]].push_back(v);
+			total_cost += min_distance_to[v];
+		}
 
 		for (auto item : graph[v]) {
 			int32_t U = item.first,
 				value = item.second;
-			if (value < min_distance_from[U] && !used[U]) {
-				q.erase({ min_distance_from[U], U });
-				min_distance_from[U] = value;
+			if (value < min_distance_to[U] && !used[U]) {
+				q.erase({ min_distance_to[U], U });
+				min_distance_to[U] = value;
 				to[U] = v;
-				q.insert({ min_distance_from[U], U });
+				q.insert({ min_distance_to[U], U });
 			}
 		}
 	}
-	return std::vector<int>();
+	
+	std::cout << "\nTotal cost: " << total_cost << '\n' << '\n';
+	
+	return Tree;
 }
-;
+void print_mst_tree(std::vector<std::vector<int32_t>> Tree)
+{
+	print_level(Tree, 1, 0);
+}
+
+void print_level(std::vector<std::vector<int32_t>> Tree, int32_t element, int32_t level)
+{
+	for (int i = 0; i < level; i++)
+		std::cout << " ";
+	std::cout << element << '\n';
+	for (auto item: Tree[element])
+		print_level(Tree, item, level+1);
+};
